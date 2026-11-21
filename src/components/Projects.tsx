@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { RefObject } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import type { Project } from '../data/portfolio';
@@ -14,6 +14,11 @@ function subscribeCompact(callback: () => void) {
 }
 const getCompact = () => window.matchMedia(compactQuery).matches;
 const getServerCompact = () => true;
+
+function ProjectRule({ bottom = false, visible }: { bottom?: boolean; visible: boolean }) {
+    const reduced = useReducedMotion();
+    return <motion.span aria-hidden="true" className={`editorial-animated-rule${bottom ? ' is-bottom' : ''}`} initial={false} animate={{ scaleX: reduced || visible ? 1 : 0 }} transition={{ duration: reduced ? 0 : .8, ease: [.16, 1, .3, 1] }}/>;
+}
 
 function ProjectIntro({ sectionRef }: { sectionRef: RefObject<HTMLElement | null> }) {
     const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'start -1'] });
@@ -41,7 +46,29 @@ function ProjectIntro({ sectionRef }: { sectionRef: RefObject<HTMLElement | null
 function ProjectCard({ project, index }: { project: Project; index: number }) {
     const reduced = useReducedMotion();
     const ref = useRef<HTMLElement>(null);
+    const visible = useInView(ref, { amount: 'some', margin: '0px 0px -5% 0px' });
     const [stickyTop, setStickyTop] = useState(0);
+    const coveredProgress = useMotionValue(0);
+    const [covered, setCovered] = useState(false);
+    useMotionValueEvent(coveredProgress, 'change', value => setCovered(value >= .98));
+    const contentScale = useTransform(coveredProgress, [0, 1], [1, .94]);
+    const contentBlur = useTransform(coveredProgress, [0, 1], ['blur(0px)', 'blur(6px)']);
+    useEffect(() => {
+        if (reduced || index === projects.length - 1) return;
+        let frame = 0;
+        const update = () => {
+            frame = 0;
+            const next = ref.current?.nextElementSibling;
+            if (!next?.classList.contains('editorial-project')) return;
+            const top = next.getBoundingClientRect().top;
+            coveredProgress.set(Math.max(0, Math.min(1, (window.innerHeight - top) / (window.innerHeight * .8))));
+        };
+        const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule);
+        update();
+        return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
+    }, [coveredProgress, index, reduced]);
     useEffect(() => {
         const element = ref.current;
         if (!element || reduced) return;
@@ -56,15 +83,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     const y = useTransform(scrollYProgress, [0, 1], [90, 0]);
     const opacity = useTransform(scrollYProgress, [0, .75], [.2, 1]);
     return <motion.article ref={ref} className="editorial-project" style={reduced ? undefined : { position: 'sticky', top: stickyTop, zIndex: index + 1, y, opacity }}>
-        <div className="section-shell">
-            <header className="editorial-project-header"><h3>{project.name}</h3><span className="editorial-project-category">{project.category}</span></header>
-            <motion.div className="editorial-project-rule" initial={reduced ? false : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: false, amount: .5 }} transition={{ duration: .7, ease: [.16, 1, .3, 1] }} />
+        <motion.div className="section-shell" style={reduced ? undefined : { scale: contentScale, filter: contentBlur }}>
+            <header className="editorial-project-header"><span className="editorial-project-title-mask"><motion.h3 initial={false} animate={{ x: reduced || (visible && !covered) ? '0%' : '-110%', opacity: reduced || (visible && !covered) ? 1 : 0 }} transition={reduced || !visible || covered ? { duration: 0 } : { duration: .8, ease: [.16, 1, .3, 1] }}>{project.name}</motion.h3></span></header>
+            <motion.div className="editorial-project-rule" initial={false} animate={{ scaleX: reduced || visible ? 1 : 0 }} transition={{ duration: reduced ? 0 : .7, ease: [.16, 1, .3, 1] }} />
             <div className="editorial-project-main">
-                <div><p className="editorial-project-lead">{project.lead}</p><ul className="editorial-project-details">{project.details.map(detail => <li key={detail.title}><p><strong>{detail.title}</strong> {detail.copy}</p></li>)}</ul></div>
-                <dl className="editorial-project-meta"><div><dt>ROLE</dt><dd>{project.role}</dd></div><div><dt>PERIOD</dt><dd>{project.period}</dd></div><div><dt>TECHNOLOGIES</dt><dd><ul className="editorial-tech-list">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></dd></div></dl>
+                <div><ul className="editorial-project-details">{project.details.map(detail => <li key={detail.title}><p>{detail.copy}</p></li>)}</ul></div>
+                <dl className="editorial-project-meta"><div className="editorial-project-tech"><ProjectRule visible={visible}/><dt>TECHNOLOGIES</dt><dd><ul className="editorial-tech-list">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></dd></div><div><ProjectRule visible={visible}/><dt>ROLE</dt><dd>{project.role}</dd></div><div><ProjectRule visible={visible}/><dt>PERIOD</dt><dd>{project.period}</dd><ProjectRule bottom visible={visible}/></div></dl>
             </div>
-            <div className="editorial-project-bottom"><div className="editorial-project-metrics" aria-label="Project highlights">{project.metrics.map(metric => <strong key={metric}>{metric}</strong>)}</div><div className="editorial-project-links">{project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}</div></div>
-        </div>
+            <div className="editorial-project-bottom"><ProjectRule visible={visible}/><div className="editorial-project-metrics" aria-label="Project highlights">{project.metrics.map(metric => <strong key={metric}>{metric}</strong>)}</div><div className="editorial-project-links">{project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}</div><ProjectRule bottom visible={visible}/></div>
+        </motion.div>
     </motion.article>;
 }
 
