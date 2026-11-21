@@ -421,3 +421,17 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 .site-cursor[data-pressed="true"] .site-cursor-ring i{transform:scale(.8)}
 @media(hover:hover) and (pointer:fine){.site-cursor{display:block}.custom-cursor-ready,.custom-cursor-ready *{cursor:none!important}}
 @media(prefers-reduced-motion:reduce){.site-cursor-ring i{transition:none}}
+
+
+
+.contact-wordmark{display:inline-flex}
+.contact-letter-mask{display:block;overflow:hidden;padding:.12em .035em;margin:-.12em -.035em}
+.contact-letter-mask>span{display:block}
+
+.contact-reveal-text{display:inline-flex;flex-wrap:wrap;max-width:100%;min-width:0}
+.contact-text-mask{display:block;overflow:hidden;padding:.12em .025em;margin:-.12em -.025em}
+.contact-text-mask>span{display:block}
+
+.editorial-project-header h3{transition:color 200ms ease}
+@media(hover:hover){.editorial-project:hover .editorial-project-header h3{color:var(--accent-primary)}}
+@media(prefers-reduced-motion:reduce){.editorial-project-header h3{transition:none}}
