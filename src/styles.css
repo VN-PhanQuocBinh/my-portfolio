@@ -517,3 +517,4 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 .editorial-project-links a:first-child{background:var(--text-primary);color:var(--bg-primary)}
 .editorial-project-links a:hover,.editorial-project-links a:first-child:hover{background:var(--accent-primary);border-color:var(--accent-primary);color:var(--bg-primary)}
 @media(max-width:760px){.editorial-project-meta .editorial-project-tech dd{font-size:19px}.editorial-project-links a{font-size:13px}}
+@media(max-width:760px){.projects-split-title{font-size:clamp(42px,16vw,120px)}.projects-intro-sentence{font-size:clamp(16px,4.2vw,24px)}}

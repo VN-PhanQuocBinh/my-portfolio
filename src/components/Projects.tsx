@@ -1,19 +1,10 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import { motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import type { Project } from '../data/portfolio';
 import { Roll } from './UI';
-
-const compactQuery = '(max-width: 760px), (max-height: 600px)';
-function subscribeCompact(callback: () => void) {
-    const media = window.matchMedia(compactQuery);
-    media.addEventListener('change', callback);
-    return () => media.removeEventListener('change', callback);
-}
-const getCompact = () => window.matchMedia(compactQuery).matches;
-const getServerCompact = () => true;
 
 function ProjectRule({ bottom = false, visible }: { bottom?: boolean; visible: boolean }) {
     const reduced = useReducedMotion();
@@ -98,9 +89,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 export default function Projects() {
     const sectionRef = useRef<HTMLElement>(null);
     const reduced = useReducedMotion();
-    const compact = useSyncExternalStore(subscribeCompact, getCompact, getServerCompact);
     return <section ref={sectionRef} id="work" className="editorial-work" aria-labelledby="projects-heading">
-        {reduced || compact ? <div className="editorial-work-static section-shell"><h2 id="projects-heading">PROJECTS</h2><p>Selected projects. Built end to end.</p></div> : <><h2 id="projects-heading" className="sr-only">PROJECTS</h2><ProjectIntro sectionRef={sectionRef}/><div className="project-intro-pause" aria-hidden="true"/></>}
+        {reduced ? <div className="editorial-work-static section-shell"><h2 id="projects-heading">PROJECTS</h2><p>Selected projects. Built end to end.</p></div> : <><h2 id="projects-heading" className="sr-only">PROJECTS</h2><ProjectIntro sectionRef={sectionRef}/><div className="project-intro-pause" aria-hidden="true"/></>}
         {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index}/>)}
     </section>;
 }
