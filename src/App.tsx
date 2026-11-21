@@ -17,5 +17,5 @@ export default function App() {
         frame = requestAnimationFrame(raf);
         return () => { cancelAnimationFrame(frame); lenis.destroy(); };
     }, [reducedMotion]);
-    return <MotionConfig reducedMotion="user"><a href="#main" className="skip-link">Đi đến nội dung</a><Navbar /><main id="main"><Hero /><Experience /><Projects /></main><Contact /></MotionConfig>;
+    return <MotionConfig reducedMotion="user"><a href="#main" className="skip-link">Skip to content</a><Navbar /><main id="main"><Hero /><Experience /><Projects /></main><Contact /></MotionConfig>;
 }

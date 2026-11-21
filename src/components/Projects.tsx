@@ -24,7 +24,7 @@ function ProjectContent({ project, index }: { project: Project; index: number })
         <header className="stack-project-header"><h3>{project.name}</h3><span className="stack-project-category">{String(index + 1).padStart(2, '0')} / {project.category}</span></header>
         <div className="project-summary">
             <div className="project-summary-main"><p className="project-summary-subtitle">{project.subtitle}</p><div className="project-summary-descriptions">{project.details.map(detail => <p className="project-summary-description" key={detail.title}>{detail.copy}</p>)}</div><ProjectLinks project={project}/></div>
-            <div className="project-summary-meta"><div><span>VAI TRÒ</span><p>{project.role}</p></div><div><span>THỜI GIAN</span><p>{project.period}</p></div><div className="project-tech-group"><span>CÔNG NGHỆ</span><p>{project.stack.join(' · ')}</p></div></div><div className="project-highlights" aria-label="Điểm nổi bật">{project.metrics.map(metric => <div className="project-highlight" key={metric}><span className="project-highlight-mark" aria-hidden="true">✳</span><strong>{metric}</strong></div>)}</div>
+            <div className="project-summary-meta"><div><span>ROLE</span><p>{project.role}</p></div><div><span>PERIOD</span><p>{project.period}</p></div><div className="project-tech-group"><span>TECHNOLOGIES</span><p>{project.stack.join(' · ')}</p></div></div><div className="project-highlights" aria-label="Project highlights">{project.metrics.map(metric => <div className="project-highlight" key={metric}><span className="project-highlight-mark" aria-hidden="true">✳</span><strong>{metric}</strong></div>)}</div>
         </div>
     </>;
 }

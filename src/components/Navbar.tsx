@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Roll } from "./UI";
 const links = [
-  { label: "PROJECTS", id: "work" },
-  { label: "EXPERIENCE", id: "experience" },
-  { label: "CONTACT", id: "contact" },
+  { label: "01. EXP", id: "experience" },
+  { label: "02. WORK", id: "work" },
+  { label: "03. CONTACT", id: "contact" },
 ];
 export default function Navbar() {
   const [active, setActive] = useState("");
@@ -23,7 +23,7 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
   return (
-    <nav className="micro-nav" aria-label="Điều hướng chính">
+    <nav className="micro-nav" aria-label="Main navigation">
       {links.map((link) => (
         <a
           key={link.id}

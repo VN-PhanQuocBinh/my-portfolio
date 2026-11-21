@@ -1,6 +1,6 @@
 [
   {
-    "title": "Ngôn ngữ lập trình",
+    "title": "Programming Languages",
     "items": [
       "JavaScript",
       "TypeScript",
@@ -31,7 +31,7 @@
     ]
   },
   {
-    "title": "Cơ sở dữ liệu",
+    "title": "Databases",
     "items": [
       "PostgreSQL",
       "Supabase",
@@ -39,7 +39,7 @@
     ]
   },
   {
-    "title": "Công cụ & AI",
+    "title": "Tools & AI",
     "items": [
       "Git",
       "GitHub",
@@ -51,7 +51,7 @@
     ]
   },
   {
-    "title": "Kiểm thử & sửa lỗi",
+    "title": "Testing & Debugging",
     "items": [
       "Unit Testing",
       "Manual Testing",
@@ -59,7 +59,7 @@
     ]
   },
   {
-    "title": "Nền tảng & kiến trúc",
+    "title": "Fundamentals & Architecture",
     "items": [
       "OOP",
       "DSA",
