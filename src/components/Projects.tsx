@@ -16,15 +16,15 @@ const getCompact = () => window.matchMedia(compactQuery).matches;
 const getServerCompact = () => true;
 
 function ProjectLinks({ project }: { project: Project }) {
-    return <div className="project-links">{project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}</div>;
+    return <div className="project-links">{project.links.map(link => <a className={link.label === 'Live website' ? 'project-link-primary' : 'project-link-secondary'} key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}</div>;
 }
 
 function ProjectContent({ project, index }: { project: Project; index: number }) {
     return <>
-        <header className="stack-project-header"><h3>{project.name}</h3><span className="stack-project-category">{String(index + 1).padStart(2, '0')} / {project.category}</span></header>
+        <header className="stack-project-header"><h3>{project.name}</h3><span className="stack-project-category"><span className="project-number">{String(index + 1).padStart(2, '0')}</span> / {project.category}</span></header>
         <div className="project-summary">
-            <div className="project-summary-main"><p className="project-summary-subtitle">{project.subtitle}</p><div className="project-summary-descriptions">{project.details.map(detail => <p className="project-summary-description" key={detail.title}>{detail.copy}</p>)}</div><ProjectLinks project={project}/></div>
-            <div className="project-summary-meta"><div><span>ROLE</span><p>{project.role}</p></div><div><span>PERIOD</span><p>{project.period}</p></div><div className="project-tech-group"><span>TECHNOLOGIES</span><p>{project.stack.join(' · ')}</p></div></div><div className="project-highlights" aria-label="Project highlights">{project.metrics.map(metric => <div className="project-highlight" key={metric}><strong>{metric}</strong></div>)}</div>
+            <div className="project-summary-main"><p className="project-lead">{project.lead}</p><ol className="project-engineering">{project.details.map((detail, i) => <li key={detail.title}><span className="project-engineering-index">{String(i + 1).padStart(2, '0')}</span><p><strong>{detail.title}</strong><span>{detail.copy}</span></p></li>)}</ol><ProjectLinks project={project}/></div>
+            <div className="project-summary-meta"><div><span>ROLE</span><p>{project.role}</p></div><div><span>PERIOD</span><p>{project.period}</p></div><div className="project-tech-group"><span>TECHNOLOGIES</span><ul className="project-tech-tags">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></div></div><div className="project-highlights" aria-label="Project highlights">{project.metrics.map(metric => <div className="project-highlight" key={metric}><strong>{metric}</strong></div>)}</div>
         </div>
     </>;
 }

@@ -1,1 +1,1 @@
-export default { content: ['./index.html', './src/**/*.{ts,tsx}'], theme: { extend: { colors: { paper: '#F9FAFB', ink: '#010280', tint: '#E8EAFA', cyan: '#00A3FF' }, fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] } } }, plugins: [] }
+export default { content: ['./index.html', './src/**/*.{ts,tsx}'], theme: { extend: { colors: { paper: '#F8F9FB', ink: '#0B1221', tint: '#EFF4FF', cyan: '#1D4ED8' }, fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] } } }, plugins: [] }
