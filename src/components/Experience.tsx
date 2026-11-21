@@ -7,7 +7,7 @@ export default function Experience() {
     const [open, setOpen] = useState<number | null>(0);
     const reduced = useReducedMotion();
     return <section id="experience" className="section-shell chapter-section experience-editorial" aria-labelledby="experience-heading">
-        <div className="experience-editorial-heading"><span>01</span><h2 id="experience-heading">EXPERIENCE</h2></div>
+        <div className="experience-editorial-heading"><h2 id="experience-heading">EXPERIENCE</h2></div>
         <div className="experience-editorial-list">{experiences.map((exp, index) => <article className="experience-editorial-row" key={exp.company}>
             <motion.div className="experience-editorial-divider" aria-hidden="true" initial={reduced ? false : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true, amount: .2 }} transition={{ duration: .8, ease: [.16, 1, .3, 1] }}/>
             <button className="experience-editorial-trigger" aria-expanded={open === index} aria-controls={`experience-content-${index}`} onClick={() => setOpen(open === index ? null : index)}>

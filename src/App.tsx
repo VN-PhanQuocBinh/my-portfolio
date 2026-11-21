@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Cursor from './components/Cursor';
 export default function App() {
     const reducedMotion = useReducedMotion();
     const lenisRef = useRef<Lenis | null>(null);
@@ -41,5 +42,5 @@ export default function App() {
         document.addEventListener('click', navigate, true);
         return () => document.removeEventListener('click', navigate, true);
     }, [reducedMotion]);
-    return <MotionConfig reducedMotion="user"><a href="#main" className="skip-link">Skip to content</a><Navbar /><main id="main"><Hero /><Experience /><Projects /></main><Contact /></MotionConfig>;
+    return <MotionConfig reducedMotion="user"><Cursor/><a href="#main" className="skip-link">Skip to content</a><Navbar /><main id="main"><Hero /><Experience /><Projects /></main><Contact /></MotionConfig>;
 }
