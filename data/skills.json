@@ -1,0 +1,71 @@
+[
+  {
+    "title": "Ngôn ngữ lập trình",
+    "items": [
+      "JavaScript",
+      "TypeScript",
+      "HTML / CSS",
+      "SQL",
+      "C#",
+      "Java"
+    ]
+  },
+  {
+    "title": "Frontend",
+    "items": [
+      "React.js",
+      "Next.js",
+      "Vue.js",
+      "Tailwind CSS",
+      "Responsive Design"
+    ]
+  },
+  {
+    "title": "Backend",
+    "items": [
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "ASP.NET Core",
+      "EF Core"
+    ]
+  },
+  {
+    "title": "Cơ sở dữ liệu",
+    "items": [
+      "PostgreSQL",
+      "Supabase",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Công cụ & AI",
+    "items": [
+      "Git",
+      "GitHub",
+      "Postman",
+      "CodeRabbit",
+      "Docker",
+      "GitHub Actions",
+      "Codex"
+    ]
+  },
+  {
+    "title": "Kiểm thử & sửa lỗi",
+    "items": [
+      "Unit Testing",
+      "Manual Testing",
+      "Debugging"
+    ]
+  },
+  {
+    "title": "Nền tảng & kiến trúc",
+    "items": [
+      "OOP",
+      "DSA",
+      "Design Patterns",
+      "Clean Architecture",
+      "Layered Architecture"
+    ]
+  }
+]
