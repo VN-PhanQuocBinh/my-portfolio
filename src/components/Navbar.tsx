@@ -1,51 +1,78 @@
-import { useEffect, useState } from "react";
-import { Roll } from "./UI";
-import { useTheme } from "../hooks/useTheme";
-import type { Theme } from "../hooks/useTheme";
-const themes: { key: Theme; label: string }[] = [{ key: "cobalt", label: "Electric Cobalt" }, { key: "prussian", label: "Prussian Blue" }, { key: "azure", label: "Tech Azure" }];
-const links = [
-  { label: "EXP", id: "experience" },
-  { label: "WORK", id: "work" },
-  { label: "CONTACT", id: "contact" },
+import { useEffect, useRef, useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import { useTheme } from '../hooks/useTheme';
+import type { CSSProperties } from 'react';
+import { navigationTop } from '../utils/navigation';
+import type { Theme } from '../hooks/useTheme';
+
+const themes: { key: Theme; label: string }[] = [
+  { key: 'cobalt', label: 'Electric Cobalt' },
+  { key: 'prussian', label: 'Prussian Blue' },
+  { key: 'graphite', label: 'Graphite' },
+  { key: 'stone', label: 'Warm Stone' },
 ];
+const links = [
+  { label: 'Home', id: 'top' },
+  { label: 'Experience', id: 'experience' },
+  { label: 'Projects', id: 'work' },
+  { label: 'Skills', id: 'skills' },
+  { label: 'Contact', id: 'contact' },
+];
+
 export default function Navbar() {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('top');
+  const [hovered, setHovered] = useState<string | null>(null);
+  const visualActive = hovered ?? active;
+  const [open, setOpen] = useState(false);
+  const panel = useRef<HTMLElement>(null);
+  const burger = useRef<HTMLButtonElement>(null);
   const { theme, setTheme } = useTheme();
+  const currentTheme = themes.findIndex(option => option.key === theme);
+  const nextTheme = themes[(currentTheme + 1) % themes.length];
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-15% 0px -60% 0px" },
-    );
-    links.forEach((link) => {
-      const el = document.getElementById(link.id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      let current = links[0].id;
+      for (const link of links) {
+        const element = document.getElementById(link.id);
+        if (element && window.scrollY + 8 >= navigationTop(element)) current = link.id;
+      }
+      setActive(current);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
   }, []);
-  return (
-    <>
-    <a className="open-to-work" href="#contact">
-      <span className="open-to-work-dot" aria-hidden="true" />
-      <span>Open to work</span>
-    </a>
-    <nav className="micro-nav" aria-label="Main navigation">
-      {links.map((link) => (
-        <a
-          key={link.id}
-          href={`#${link.id}`}
-          aria-current={active === link.id ? "location" : undefined}
-        >
-          <Roll>{link.label}</Roll>
-        </a>
-      ))}
-      <div className="theme-switcher" role="group" aria-label="Color theme">
-        {themes.map(option => <button key={option.key} type="button" className={`theme-swatch theme-swatch-${option.key}`} aria-label={`Theme: ${option.label}`} title={`Theme: ${option.label}`} aria-pressed={theme === option.key} onClick={() => setTheme(option.key)}/>)}
-      </div>
+  useEffect(() => {
+    if (!open) return;
+    panel.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setOpen(false); burger.current?.focus(); }
+      if (event.key === 'Tab') {
+        const items = panel.current?.querySelectorAll<HTMLAnchorElement>('a');
+        if (!items?.length) return;
+        if (event.shiftKey && document.activeElement === items[0]) { event.preventDefault(); items[items.length - 1].focus(); }
+        else if (!event.shiftKey && document.activeElement === items[items.length - 1]) { event.preventDefault(); items[0].focus(); }
+      }
+    };
+    const media = window.matchMedia('(min-width: 761px)');
+    const closeOnDesktop = () => { if (media.matches) setOpen(false); };
+    document.addEventListener('keydown', onKey);
+    media.addEventListener('change', closeOnDesktop);
+    return () => { document.removeEventListener('keydown', onKey); media.removeEventListener('change', closeOnDesktop); };
+  }, [open]);
+  return <>
+    <a className="open-to-work" href="#contact"><span className="open-to-work-dot" aria-hidden="true"/><span>Open to work</span></a>
+    <div className="navigation-controls">
+      <button className="theme-cycle" type="button" onClick={() => setTheme(nextTheme.key)} aria-label={`Current theme: ${themes[currentTheme].label}. Switch to ${nextTheme.label}`} title={`Theme: ${themes[currentTheme].label} — switch to ${nextTheme.label}`}><span className="theme-current-swatch" aria-hidden="true"/></button>
+      <button className="navigation-burger" type="button" ref={burger} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="side-navigation" onClick={() => setOpen(!open)}>{open ? <X size={21}/> : <Menu size={21}/>}</button>
+    </div>
+    {open && <div className="navigation-backdrop" onClick={() => { setOpen(false); burger.current?.focus(); }} aria-hidden="true"/>}
+    <nav id="side-navigation" ref={panel} className={`side-nav${open ? ' is-open' : ''}`} aria-label="Main navigation">
+      {links.map((link, index) => <a style={{ '--nav-line-delay': `${60 + Math.abs(index - links.findIndex(item => item.id === visualActive)) * 35}ms`, '--nav-line-width': `${(Math.abs(index - links.findIndex(item => item.id === visualActive)) === 0 ? 52 : Math.abs(index - links.findIndex(item => item.id === visualActive)) === 1 ? 30 : 20)}px` } as CSSProperties} data-highlight={visualActive === link.id} onMouseEnter={() => setHovered(link.id)} onMouseLeave={() => setHovered(null)} onFocus={() => setHovered(link.id)} onBlur={() => setHovered(null)} key={link.id} href={`#${link.id}`} aria-label={link.label} aria-current={active === link.id ? 'location' : undefined} onClick={() => { setOpen(false); }}><span className="side-nav-line" aria-hidden="true"/><span className="side-nav-label">{link.label}</span></a>)}
     </nav>
-    </>
-  );
+  </>;
 }

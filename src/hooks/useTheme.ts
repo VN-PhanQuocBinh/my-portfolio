@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-export type Theme = 'cobalt' | 'prussian' | 'azure';
-const isTheme = (value: string | null): value is Theme => value === 'cobalt' || value === 'prussian' || value === 'azure';
+export type Theme = 'cobalt' | 'prussian' | 'graphite' | 'stone';
+const isTheme = (value: string | null): value is Theme => value === 'cobalt' || value === 'prussian' || value === 'graphite' || value === 'stone';
 function initialTheme(): Theme {
     try { const saved = localStorage.getItem('portfolio-theme'); return isTheme(saved) ? saved : 'cobalt'; }
     catch { return 'cobalt'; }

@@ -20,7 +20,7 @@ function randomRevealOrder() {
 export default function Skills() {
   const reducedMotion = useReducedMotion();
   const [revealOrder, setRevealOrder] = useState(randomRevealOrder);
-  return <section className="skills-paper" aria-label="Skills and education">
+  return <section id="skills" className="skills-paper" aria-label="Skills and education">
     <div className="section-shell">
       <div className="section-title-row"><Chapter number="03" title="SKILLS" repeat /></div>
       <motion.div className="skills-specimen" onViewportLeave={() => setRevealOrder(randomRevealOrder())} viewport={{ amount: 'some' }}>
