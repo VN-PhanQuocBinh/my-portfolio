@@ -1,2 +1,15 @@
 <!doctype html>
-<html lang="en"><head><script>try{const t=localStorage.getItem('portfolio-theme');document.documentElement.dataset.theme=['cobalt','prussian','graphite','stone'].includes(t)?t:'cobalt'}catch{document.documentElement.dataset.theme='cobalt'}</script><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#0B1221"/><meta name="description" content="Phan Quoc Binh — Full-Stack Developer based in Can Tho, Vietnam."/><meta property="og:title" content="Phan Quoc Binh — Full-Stack Developer"/><meta property="og:description" content="Clean systems. Thoughtful interfaces. Selected work & an interactive algorithm lab."/><meta property="og:type" content="website"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><title>Phan Quoc Binh — Full-Stack Developer</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<html lang="en" data-theme="cobalt" data-mode="light"><head>
+<meta charset="UTF-8"/>
+<script>
+  try {
+    const theme = localStorage.getItem('portfolio-theme');
+    const mode = localStorage.getItem('portfolio-mode');
+    const root = document.documentElement;
+    root.dataset.theme = ['cobalt', 'prussian', 'graphite', 'stone'].includes(theme) ? theme : 'cobalt';
+    root.dataset.mode = mode === 'dark' ? 'dark' : 'light';
+  } catch {}
+</script>
+<style>
+  html[data-mode="dark"] { color-scheme: dark; background-color: #0A0D14; }
+</style><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#0B1221"/><meta name="description" content="Phan Quoc Binh — Full-Stack Developer based in Can Tho, Vietnam."/><meta property="og:title" content="Phan Quoc Binh — Full-Stack Developer"/><meta property="og:description" content="Clean systems. Thoughtful interfaces. Selected work & an interactive algorithm lab."/><meta property="og:type" content="website"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><title>Phan Quoc Binh — Full-Stack Developer</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>

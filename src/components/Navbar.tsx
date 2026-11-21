@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import type { CSSProperties } from 'react';
 import { navigationTop } from '../utils/navigation';
@@ -26,9 +26,11 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLElement>(null);
   const burger = useRef<HTMLButtonElement>(null);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, mode, toggleMode } = useTheme();
   const currentTheme = themes.findIndex(option => option.key === theme);
+  const currentThemeLabel = themes[currentTheme].label;
   const nextTheme = themes[(currentTheme + 1) % themes.length];
+  const modeLabel = mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -73,7 +75,14 @@ export default function Navbar() {
   return <>
     <a className="open-to-work" href="#contact"><span className="open-to-work-dot" aria-hidden="true"/><span>Open to work</span></a>
     <div className="navigation-controls">
-      <button className="theme-cycle" type="button" onClick={() => setTheme(nextTheme.key)} aria-label={`Current theme: ${themes[currentTheme].label}. Switch to ${nextTheme.label}`} title={`Theme: ${themes[currentTheme].label} — switch to ${nextTheme.label}`}><span className="theme-current-swatch" aria-hidden="true"/></button>
+      <button className="theme-cycle" type="button" onClick={() => setTheme(nextTheme.key)}
+        aria-label={`Current theme: ${currentThemeLabel}. Switch to ${nextTheme.label}`}
+        title={`Theme: ${currentThemeLabel} — switch to ${nextTheme.label}`}>
+        <span className="theme-current-swatch" aria-hidden="true" />
+      </button>
+      <button className="mode-toggle" type="button" onClick={toggleMode} aria-label={modeLabel} title={modeLabel}>
+        {mode === 'dark' ? <Sun size={14} aria-hidden="true" /> : <Moon size={14} aria-hidden="true" />}
+      </button>
       <button className="navigation-burger" type="button" ref={burger} aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="side-navigation" onClick={() => setOpen(!open)}>{open ? <X size={21}/> : <Menu size={21}/>}</button>
     </div>
     {open && <div className="navigation-backdrop" onClick={() => { setOpen(false); burger.current?.focus(); }} aria-hidden="true"/>}

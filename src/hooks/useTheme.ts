@@ -1,16 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export type Theme = 'cobalt' | 'prussian' | 'graphite' | 'stone';
-const isTheme = (value: string | null): value is Theme => value === 'cobalt' || value === 'prussian' || value === 'graphite' || value === 'stone';
-function initialTheme(): Theme {
-    try { const saved = localStorage.getItem('portfolio-theme'); return isTheme(saved) ? saved : 'cobalt'; }
-    catch { return 'cobalt'; }
+export type Mode = 'light' | 'dark';
+
+function savePreference(key: string, value: string) {
+    try {
+        localStorage.setItem(key, value);
+    } catch {
+        // The current session still uses the selected preference.
+    }
 }
+
 export function useTheme() {
-    const [theme, setTheme] = useState<Theme>(initialTheme);
-    useEffect(() => {
-        document.documentElement.dataset.theme = theme;
-        try { localStorage.setItem('portfolio-theme', theme); } catch { /* Theme remains available for this session. */ }
-    }, [theme]);
-    return { theme, setTheme };
+    const [theme, updateTheme] = useState<Theme>(() => {
+        const initial = document.documentElement.dataset.theme;
+        return initial === 'prussian' || initial === 'graphite' || initial === 'stone' ? initial : 'cobalt';
+    });
+    const [mode, updateMode] = useState<Mode>(() =>
+        document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light',
+    );
+
+    function setTheme(next: Theme) {
+        document.documentElement.dataset.theme = next;
+        savePreference('portfolio-theme', next);
+        updateTheme(next);
+    }
+
+    function toggleMode() {
+        const next = document.documentElement.dataset.mode === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.mode = next;
+        savePreference('portfolio-mode', next);
+        updateMode(next);
+    }
+
+    return { theme, setTheme, mode, toggleMode };
 }
