@@ -485,3 +485,5 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 @media(prefers-reduced-motion:reduce){.experience-editorial-row,.experience-editorial-row::before,.experience-editorial-place,.experience-editorial-period,.experience-editorial-stack{transition:none}}
 
 .experience-editorial-row:hover .experience-editorial-name{translate:none}
+
+.footer-wordmark{overflow:hidden;padding:clamp(40px,6vw,90px) 3vw 0;text-align:center;font:800 clamp(38px,12.2vw,200px)/.9 Inter,sans-serif;letter-spacing:-.065em;white-space:nowrap;color:var(--footer-text);background:linear-gradient(to bottom,var(--footer-text) 0%,transparent 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}

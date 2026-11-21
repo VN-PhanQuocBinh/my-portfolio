@@ -38,6 +38,12 @@ export default function Navbar() {
         const element = document.getElementById(link.id);
         if (element && window.scrollY + 8 >= navigationTop(element)) current = link.id;
       }
+      const footer = document.getElementById('contact');
+      if (footer) {
+        const bounds = footer.getBoundingClientRect();
+        const visible = Math.max(0, Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0));
+        if (visible >= window.innerHeight * .5 || window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) current = 'contact';
+      }
       setActive(current);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -72,7 +78,7 @@ export default function Navbar() {
     </div>
     {open && <div className="navigation-backdrop" onClick={() => { setOpen(false); burger.current?.focus(); }} aria-hidden="true"/>}
     <nav id="side-navigation" ref={panel} className={`side-nav${open ? ' is-open' : ''}`} aria-label="Main navigation">
-      {links.map((link, index) => <a style={{ '--nav-line-delay': `${60 + Math.abs(index - links.findIndex(item => item.id === visualActive)) * 35}ms`, '--nav-line-width': `${(Math.abs(index - links.findIndex(item => item.id === visualActive)) === 0 ? 52 : Math.abs(index - links.findIndex(item => item.id === visualActive)) === 1 ? 30 : 20)}px` } as CSSProperties} data-highlight={visualActive === link.id} onMouseEnter={() => setHovered(link.id)} onMouseLeave={() => setHovered(null)} onFocus={() => setHovered(link.id)} onBlur={() => setHovered(null)} key={link.id} href={`#${link.id}`} aria-label={link.label} aria-current={active === link.id ? 'location' : undefined} onClick={() => { setOpen(false); }}><span className="side-nav-line" aria-hidden="true"/><span className="side-nav-label">{link.label}</span></a>)}
+      {links.map((link, index) => <a style={{ '--nav-line-delay': `${60 + Math.abs(index - links.findIndex(item => item.id === visualActive)) * 35}ms`, '--nav-line-width': `${(Math.abs(index - links.findIndex(item => item.id === visualActive)) === 0 ? 52 : Math.abs(index - links.findIndex(item => item.id === visualActive)) === 1 ? 30 : 20)}px` } as CSSProperties} data-highlight={visualActive === link.id} onMouseEnter={() => setHovered(link.id)} onMouseLeave={() => setHovered(null)} onFocus={event => { if (event.currentTarget.matches(':focus-visible')) setHovered(link.id); }} onBlur={() => setHovered(null)} key={link.id} href={`#${link.id}`} aria-label={link.label} aria-current={active === link.id ? 'location' : undefined} onClick={() => { setOpen(false); setHovered(null); }}><span className="side-nav-line" aria-hidden="true"/><span className="side-nav-label">{link.label}</span></a>)}
     </nav>
   </>;
 }
