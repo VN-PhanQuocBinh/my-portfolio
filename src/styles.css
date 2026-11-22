@@ -524,6 +524,15 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 @media(min-width:768px){.hero h1.hero-name{font-size:clamp(4.5rem,14vw,13.5rem)}.hero .hero-role{font-size:clamp(24px,2.1vw,30px);letter-spacing:.08em}}
 @media(max-width:767px){.hero h1.hero-name{font-size:21vw;line-height:.86;letter-spacing:-.05em}.hero-wordmark{flex-direction:column;align-items:center;gap:.08em}.hero .hero-role{font-size:clamp(11px,3.25vw,14px);letter-spacing:.22em;-webkit-text-stroke:1px var(--text-primary)}.hero .hero-role .hero-role-letter{-webkit-text-stroke-width:1px}.hero-role-wrap{margin-top:clamp(26px,7vw,42px)}}
 
+/* Match the role's visual width to the name while keeping each word legible. */
+@media(min-width:768px){.hero .hero-role{font-size:clamp(2rem,6.9vw,6.6rem);letter-spacing:-.045em}}
+@media(max-width:767px){.hero .hero-role{flex-direction:column;align-items:center;gap:.08em;font-size:11vw;line-height:.9;letter-spacing:-.05em}.hero-role-word+.hero-role-word{margin-left:0}}
+.hero .hero-role .hero-role-letter{-webkit-text-stroke-width:3px}
+.hero-letter-interactive{color:var(--text-primary);transition:color 200ms ease}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.hero-letter-interactive:hover{color:var(--accent-primary)}}
+@media(prefers-reduced-motion:reduce){.hero-letter-interactive{transition:none}}
+@media(max-width:767px){.hero .hero-role .hero-role-letter{-webkit-text-stroke-width:2.5px}}
+
 /* Contact keeps readable ink for the details and reserves the accent for actions. */
 .contact-section :is(.email-button,a) svg{color:var(--footer-accent)}
 .contact-section :is(.email-button,a):is(:hover,:focus-visible) .contact-reveal-text{text-decoration:underline;text-decoration-color:var(--footer-accent);text-decoration-thickness:1px;text-underline-offset:.2em}

@@ -166,11 +166,11 @@
     position: absolute;
     top: 13%;
     left: -24px;
-    opacity: .4;
+    opacity: .5;
     font: 800 clamp(56px, 10vw, 150px)/1 Inter, sans-serif;
     letter-spacing: -.04em;
     color: transparent;
-    -webkit-text-stroke: 1px var(--border-hairline);
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--text-primary) 28%, var(--bg-primary));
 }
 
 .hero-bg-ribbon:last-child {
@@ -187,7 +187,7 @@
 
 .hero-bg-ribbon-track span {
     -webkit-text-fill-color: var(--bg-primary);
-    -webkit-text-stroke: 2px var(--border-hairline);
+    -webkit-text-stroke: 2px color-mix(in srgb, var(--text-primary) 28%, var(--bg-primary));
     paint-order: stroke fill;
 }
 
