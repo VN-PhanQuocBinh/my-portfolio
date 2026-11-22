@@ -1,5 +1,5 @@
 export const profile = {
-    name: 'Phan Quoc Binh', email: 'binh26042005@gmail.com', phone: '0387405218',
+    name: 'Phan Quoc Binh', email: 'binh26042005@gmail.com',
     github: 'https://github.com/VN-PhanQuocBinh', linkedin: 'https://www.linkedin.com/in/phan-quoc-binh/',
 };
 export const experiences = [
