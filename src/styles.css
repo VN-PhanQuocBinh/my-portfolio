@@ -537,3 +537,5 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 .contact-section :is(.email-button,a) svg{color:var(--footer-accent)}
 .contact-section :is(.email-button,a):is(:hover,:focus-visible) .contact-reveal-text{text-decoration:underline;text-decoration-color:var(--footer-accent);text-decoration-thickness:1px;text-underline-offset:.2em}
 .contact-section :is(.email-button,a):focus-visible{outline-color:var(--footer-accent)}
+
+@media(min-width:761px){.section-shell{padding-inline:clamp(90px,8vw,150px)}}
