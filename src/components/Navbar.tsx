@@ -8,6 +8,7 @@ import type { Theme } from '../hooks/useTheme';
 const themes: { key: Theme; label: string }[] = [
   { key: 'cobalt', label: 'Electric Cobalt' },
   { key: 'prussian', label: 'Prussian Blue' },
+  { key: 'azure', label: 'Azure' },
   { key: 'graphite', label: 'Graphite' },
   { key: 'stone', label: 'Warm Stone' },
 ];

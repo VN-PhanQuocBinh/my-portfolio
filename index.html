@@ -6,7 +6,7 @@
     const theme = localStorage.getItem('portfolio-theme');
     const mode = localStorage.getItem('portfolio-mode');
     const root = document.documentElement;
-    root.dataset.theme = ['cobalt', 'prussian', 'graphite', 'stone'].includes(theme) ? theme : 'cobalt';
+    root.dataset.theme = ['cobalt', 'prussian', 'azure', 'graphite', 'stone'].includes(theme) ? theme : 'cobalt';
     root.dataset.mode = mode === 'dark' ? 'dark' : 'light';
   } catch {}
 </script>

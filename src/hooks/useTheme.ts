@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export type Theme = 'cobalt' | 'prussian' | 'graphite' | 'stone';
+export type Theme = 'cobalt' | 'prussian' | 'azure' | 'graphite' | 'stone';
 export type Mode = 'light' | 'dark';
 
 function savePreference(key: string, value: string) {
@@ -14,7 +14,7 @@ function savePreference(key: string, value: string) {
 export function useTheme() {
     const [theme, updateTheme] = useState<Theme>(() => {
         const initial = document.documentElement.dataset.theme;
-        return initial === 'prussian' || initial === 'graphite' || initial === 'stone' ? initial : 'cobalt';
+        return initial === 'prussian' || initial === 'azure' || initial === 'graphite' || initial === 'stone' ? initial : 'cobalt';
     });
     const [mode, updateMode] = useState<Mode>(() =>
         document.documentElement.dataset.mode === 'dark' ? 'dark' : 'light',

@@ -5,14 +5,18 @@ import Skills from './Skills';
 import { profile } from '../data/portfolio';
 import { Divider, Reveal } from './UI';
 function ContactText({ children }: { children: string }) {
-    const ref = useRef<HTMLSpanElement>(null);
-    const inView = useInView(ref, { amount: .3 });
     const reduced = useReducedMotion();
-    return <span ref={ref} className="contact-reveal-text" aria-label={children}>{Array.from(children).map((letter, index) => <span className="contact-text-mask" key={index} aria-hidden="true"><motion.span
-        initial={reduced ? false : { y: '150%', opacity: 0 }}
-        animate={{ y: reduced || inView ? '0%' : '150%', opacity: reduced || inView ? 1 : 0 }}
-        transition={reduced || !inView ? { duration: 0 } : { duration: .6, delay: .08 + Math.min(index * .025, .45), ease: [.85, 0, .2, 1] }}
-    >{letter === ' ' ? '\u00a0' : letter}</motion.span></span>)}</span>;
+    return (
+        <motion.span
+            className="contact-reveal-text"
+            initial={reduced ? false : { y: 8, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ amount: .3 }}
+            transition={{ duration: reduced ? 0 : .35, ease: [.16, 1, .3, 1] }}
+        >
+            {children}
+        </motion.span>
+    );
 }
 
 function ContactTitle() {
