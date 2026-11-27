@@ -633,6 +633,7 @@ body{position:relative}body::after{content:"";position:fixed;inset:0;z-index:60;
 
 /* Contact keeps readable ink for the details and reserves the accent for actions. */
 .contact-section :is(.email-button,a) svg{color:var(--footer-accent)}
+.contact-copy-icon{display:inline-flex;flex:none}
 .contact-section :is(.email-button,a):is(:hover,:focus-visible) .contact-reveal-text{text-decoration:underline;text-decoration-color:var(--footer-accent);text-decoration-thickness:1px;text-underline-offset:.2em}
 .contact-section :is(.email-button,a):focus-visible{outline-color:var(--footer-accent)}
 

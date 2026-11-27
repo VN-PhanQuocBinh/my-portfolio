@@ -73,33 +73,55 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'start 0.55'] });
     const y = useTransform(scrollYProgress, [0, 1], [90, 0]);
     const opacity = useTransform(scrollYProgress, [0, .75], [.2, 1]);
-    const showTitle = reduced || (visible && !covered);
+    const cue = (distance: number, delay: number, active = true) => {
+        const reveal = reduced || (visible && active);
+        return {
+            initial: false as const,
+            animate: { y: reveal ? 0 : distance, opacity: reveal ? 1 : 0 },
+            transition: {
+                duration: reveal && !reduced ? .46 : 0,
+                delay: reveal && !reduced ? delay : 0,
+                ease: [.16, 1, .3, 1] as const,
+            },
+        };
+    };
     return <motion.article ref={ref} className="editorial-project" style={reduced ? undefined : { position: 'sticky', top: stickyTop, zIndex: index + 1, y, opacity }}>
         <motion.div className="section-shell" style={reduced ? undefined : { scale: contentScale, filter: contentBlur }}>
             <header className="editorial-project-header">
                 <span className="editorial-project-title-mask">
-                    <motion.h3
-                        initial={false}
-                        animate={{ y: showTitle ? 0 : 14, opacity: showTitle ? 1 : 0 }}
-                        transition={showTitle && !reduced ? { duration: .45, ease: [.16, 1, .3, 1] } : { duration: 0 }}
-                    >
+                    <motion.h3 {...cue(14, 0, !covered)}>
                         {project.name}
                     </motion.h3>
                 </span>
             </header>
             <motion.div className="editorial-project-rule" initial={false} animate={{ scaleX: reduced || visible ? 1 : 0 }} transition={{ duration: reduced ? 0 : .7, ease: [.16, 1, .3, 1] }} />
             <div className="editorial-project-main">
-                <div><ul className="editorial-project-details">{project.details.map((detail, detailIndex) => <motion.li key={detail.title} initial={false} animate={{ opacity: reduced || visible ? 1 : 0, y: reduced || visible ? 0 : 16 }} transition={reduced || !visible ? { duration: 0 } : { duration: .55, delay: .12 + detailIndex * .1, ease: [.16, 1, .3, 1] }}><p>{detail.copy}</p></motion.li>)}</ul></div>
+                <div><ul className="editorial-project-details">
+                    {project.details.map((detail, detailIndex) => (
+                        <motion.li key={detail.title} {...cue(12, .07 + detailIndex * .06)}>
+                            <p>{detail.copy}</p>
+                        </motion.li>
+                    ))}
+                </ul></div>
                 <dl className="editorial-project-meta">
                     <div className="editorial-project-tech">
                         <dt>TECHNOLOGIES</dt>
-                        <dd><ul className="editorial-tech-list">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></dd>
+                        <motion.dd {...cue(8, .12)}><ul className="editorial-tech-list">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></motion.dd>
                     </div>
-                    <div><ProjectRule visible={visible}/><dt>ROLE</dt><dd>{project.role}</dd></div>
-                    <div><ProjectRule visible={visible}/><dt>PERIOD</dt><dd>{project.period}</dd></div>
+                    <div><ProjectRule visible={visible}/><dt>ROLE</dt><motion.dd {...cue(8, .16)}>{project.role}</motion.dd></div>
+                    <div><ProjectRule visible={visible}/><dt>PERIOD</dt><motion.dd {...cue(8, .2)}>{project.period}</motion.dd></div>
                 </dl>
             </div>
-            <div className="editorial-project-bottom"><ProjectRule visible={visible}/><div className="editorial-project-metrics" aria-label="Project highlights">{project.metrics.map(metric => <strong key={metric}>{metric}</strong>)}</div><div className="editorial-project-links">{project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}</div><ProjectRule bottom visible={visible}/></div>
+            <div className="editorial-project-bottom">
+                <ProjectRule visible={visible} />
+                <motion.div className="editorial-project-metrics" aria-label="Project highlights" {...cue(8, .23)}>
+                    {project.metrics.map(metric => <strong key={metric}>{metric}</strong>)}
+                </motion.div>
+                <motion.div className="editorial-project-links" {...cue(8, .27)}>
+                    {project.links.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"><Roll>{link.label}</Roll><ExternalLink size={16}/></a>)}
+                </motion.div>
+                <ProjectRule bottom visible={visible} />
+            </div>
         </motion.div>
     </motion.article>;
 }
